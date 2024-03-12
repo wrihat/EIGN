@@ -219,6 +219,7 @@ def process_dataset(test_path, train_path, dataset_name, output_path, cutoff, ad
     with open(os.path.join(output_path, dataset_name + '_val.pkl'), 'wb') as f:
         pickle.dump(valid, f)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # parser.add_argument('--data_path_test', type=str, default="./dataset_raw/pdbbind2016/core-set")
@@ -229,7 +230,7 @@ if __name__ == "__main__":
     # parser.add_argument('--data_path_refined', type=str, default=r"/project/huangyang/jiajun/datasets/PDBbind_dataset/refined-set")
     parser.add_argument('--add_surface', type=bool, default=False)
     parser.add_argument('--output_path', type=str, default='./dataset/')
-    parser.add_argument('--dataset_name', type=str, default='pdbbind2016_general')
+    parser.add_argument('--dataset_name', type=str, default='pdbbind2020_general')
     parser.add_argument('--cutoff', type=float, default=5.)
     args = parser.parse_args()
     process_dataset(args.data_path_test, args.data_path_train, args.dataset_name, args.output_path, args.cutoff, args.add_surface)

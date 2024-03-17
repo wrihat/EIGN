@@ -53,8 +53,7 @@ Before you begin, ensure that you have Anaconda Distribution installed on your L
 
    If no errors occur, it means these libraries have been successfully installed.
 
-That's it! You have now successfully installed and configured the `eign` virtual environment on your Linux system. Whenever you need to use this environment, make sure to activate it first by running `conda activate eign`. Then, you can run your code or scripts within the activated environment.
 
-If you need to install additional dependencies or update existing ones, you can use the `conda install` or `pip install` commands while the `eign` environment is activated.
+
 
 

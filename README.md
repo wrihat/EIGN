@@ -1,6 +1,6 @@
 # EIGN: Equivariant Interaction-aware Graph Network for Predicting the Binding Affinity of Protein-Ligand
 a method for predicting the binding affinity of protein-Ligand
-# Installing the eign Virtual Environment on Linux
+# Installing the eign Virtual Environment
 
 This document will guide you through the process of installing and configuring the `eign` Anaconda virtual environment on a Linux system. This environment contains various popular machine learning, scientific computing, and data processing libraries, such as TensorFlow, PyTorch, Scikit-learn, Pandas, and more.
 

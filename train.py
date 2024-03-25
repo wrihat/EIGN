@@ -9,9 +9,9 @@ import numpy as np
 import paddle
 import paddle.nn.functional as F
 from pgl.utils.data import Dataloader
-from dataset_egcl import GraphDataset, collate_fn
-from models import *
-from models_sign import *
+from EIGN_upload.dataset import GraphDataset, collate_fn
+from model import *
+# from models_sign import *
 from utils import rmse, mae, sd, pearson
 from tqdm import tqdm
 
@@ -169,9 +169,6 @@ if __name__ == "__main__":
     parser.add_argument('--num_epoch', type=int, default=450)
     parser.add_argument('--model_saved_dir', type=str, default='./saved_model')
     parser.add_argument('--dataset_dir', type=str, default='./dataset/')
-    # parser.add_argument('--dataset_dir', type=str, default='/data/mxp/jiajun/sign_data/dataset/')
-    # parser.add_argument('--dataset_dir', type=str,
-    #                     default='/project/huangyang/jiajun/source_code_of_projects/workSpaceProjects/IAGN-main/dataset/')
     parser.add_argument('--random_seed', type=int, default=123)
     parser.add_argument("--lr", type=float, default=0.0005)
     parser.add_argument("--hidden_dim", type=int, default=128)

@@ -57,7 +57,7 @@ class InteractGraphDataset(Dataset):
             self.dataset_length = len(data_Y)   # 数据集总长度
             self.step_len = int(self.dataset_length/self.dataset_step)  # 计算数据集分段的长度
             for i in range(self.dataset_step):
-                graph_path = f'{self.data_path}/{self.dataset}_{i + 1}_graph.pkl'
+                graph_path = f'{self.data_path}/{self.dataset}_{i + 1}_egcl_graph.pkl'
                 if os.path.exists(graph_path) == False:
                     return False
             return True
@@ -97,7 +97,7 @@ class InteractGraphDataset(Dataset):
         if self.dataset[-5:] == 'train':
             if self.dataset_seed != None:
                 print(f'Loading processed {self.dataset_seed} complex data...')
-                graph_path = f'{self.data_path}/{self.dataset}_{self.dataset_seed}_graph.pkl'
+                graph_path = f'{self.data_path}/{self.dataset}_{self.dataset_seed}_egcl_graph.pkl'
                 with open(graph_path, 'rb') as f:
                     graphs, global_feat, labels = pickle.load(f)
                     for a2a_graph, b2a_graph, inter_feat_list, bond_type_list, type_count_list, label in \
@@ -133,7 +133,10 @@ class InteractGraphDataset(Dataset):
 
     def build_graph(self, mol):
         # num_atoms_d, coords, features, atoms, long_inter_feats = mol
-        num_atoms_d, coords, features, atoms, edges, long_inter_feats = mol  #in  general set
+        num_atoms_d, coords, features, atoms, edges, long_inter_feats = mol  # general set中
+        ##################################################
+        # prepare distance matrix and interaction matrix #
+        ##################################################
         dist_mat = distance.cdist(coords, coords, 'euclidean')
         np.fill_diagonal(dist_mat, np.inf)
         long_inter_feats = np.array([long_inter_feats])
@@ -149,6 +152,7 @@ class InteractGraphDataset(Dataset):
         dist_graph_base[dist_graph_base >= self.cut_dist] = 0.
         atom_graph = coo_matrix(dist_graph_base)
         a2a_edges = list(zip(atom_graph.row, atom_graph.col))
+        # inter_edges =
         edge_type = []
         for (i, j) in a2a_edges:
             if i < num_atoms_d and j >= num_atoms_d:
@@ -183,7 +187,7 @@ class InteractGraphDataset(Dataset):
         ############################
         # build bond to atom graph #
         ############################
-        num_bonds = len(indices)   
+        num_bonds = len(indices)   # 所有边的个数
         assignment_b2a = np.zeros((num_bonds, num_atoms), dtype=np.int64)  # Maybe need too much memory
         assignment_a2b = np.zeros((num_atoms, num_bonds), dtype=np.int64)  # Maybe need too much memory
         for i, idx in enumerate(indices):
@@ -194,6 +198,9 @@ class InteractGraphDataset(Dataset):
         b2a_edges = list(zip(b2a_graph.row, b2a_graph.col))
         b2a_graph = pgl.BiGraph(b2a_edges, src_num_nodes=num_bonds, dst_num_nodes=num_atoms)
 
+        #########################################
+        # build index for inter-molecular bonds #
+        #########################################
         bond_types = bond_pair_atom_types
         type_count = [0 for _ in range(len(pair_ids))]
         for type_i in bond_types:
@@ -229,27 +236,28 @@ class InteractGraphDataset(Dataset):
                 self.labels.append(y)
 
             self.labels = np.array(self.labels).reshape(-1, 1)
+            # self.labels = np.array(data_Y).reshape(-1, 1)
             if self.save_file:
                 self.save()
 
 
 def collate_fn(batch):
-    atom2atom_gs, bond2atom_gs, feats, types, counts, labels = map(list, zip(*batch))
+    atom2atom_gs, edge2atom_gs, feats, types, counts, labels = map(list, zip(*batch))
 
     atom2atom_g = pgl.Graph.batch(atom2atom_gs).tensor()
-    bond2atom_g = pgl.BiGraph.batch(bond2atom_gs).tensor()
+    edge2atom_g = pgl.BiGraph.batch(edge2atom_gs).tensor()
     feats = paddle.concat([paddle.to_tensor(f, dtype='float32') for f in feats])
     types = paddle.concat([paddle.to_tensor(t) for t in types])
     counts = paddle.stack([paddle.to_tensor(c) for c in counts], axis=1)
     labels = paddle.to_tensor(np.array(labels), dtype='float32')
 
-    return atom2atom_g, bond2atom_g, feats, types, counts, labels
+    return atom2atom_g, edge2atom_g, feats, types, counts, labels
 
 
 if __name__ == "__main__":
-    train_data = InteractGraphDataset("./dataset/", "pdbbind2016_general_train")
-    test_data = InteractGraphDataset("./dataset/", "pdbbind2016_general_test")
-    val_data = InteractGraphDataset("./dataset/", "pdbbind2016_general_val")
+    train_data = GraphDataset("./dataset/", "pdbbind2016_general_train")
+    test_data = GraphDataset("./dataset/", "pdbbind2016_general_test")
+    val_data = GraphDataset("./dataset/", "pdbbind2016_general_val")
     train_dataloader =Dataloader(train_data, batch_size=10, shuffle=True, collate_fn=collate_fn)
     test_dataloader = Dataloader(test_data, batch_size=10, shuffle=True, collate_fn=collate_fn)
     val_dataloader = Dataloader(val_data, batch_size=10, shuffle=True, collate_fn=collate_fn)

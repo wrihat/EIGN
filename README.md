@@ -54,9 +54,10 @@ This repository is the implementation of EIGN. This document will describe the s
 ## Test Trained EIGN
 
     The trained model is saved in ./trained directory, and the test dataset is placed under the ./dataset directory, please make sure the files in the response directory have been downloaded.Then  run the command at the command line:
-    ```bash
-     nohup python test.py --cuda 0 --batch_size 2 > ./running_logs/test_logs/pdbbind2016_EIGN.txt 2>&1 &
-    ```
+    
+   ```bash
+   nohup python test.py --cuda 0 --batch_size 2 > ./running_logs/test_logs/pdbbind2016_EIGN.txt 2>&1 &
+   ```
 
 
     

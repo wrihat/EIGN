@@ -1,0 +1,22 @@
+nohup: ignoring input
+W0325 10:12:52.363309 129116 gpu_resources.cc:61] Please NOTE: device: 0, GPU Compute Capability: 6.1, Driver API Version: 12.2, Runtime API Version: 10.2
+W0325 10:12:52.369426 129116 gpu_resources.cc:91] device: 0, cuDNN Version: 8.3.
+/home/jiajun/anaconda3/envs/sign/lib/python3.8/site-packages/setuptools/sandbox.py:13: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  import pkg_resources
+/home/jiajun/anaconda3/envs/sign/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('google')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/home/jiajun/anaconda3/envs/sign/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+Loading processed complex data...
+Loading processed complex data...
+......................................................start testing ............................................................
+epoch:
+248
+Traceback (most recent call last):
+  File "test.py", line 60, in <module>
+    test(args.model_saved_dir, args.trained_model, model, test_loader, another_test_loader)  
+  File "test.py", line 24, in test
+    RMSE_test, MAE_test, SD_test, R_test = evaluate(net, tst_loader, args) 
+NameError: name 'evaluate' is not defined

@@ -6,7 +6,6 @@ This repository is the implementation of EIGN. This document will describe the s
 
 ## Installation
 
-Before you begin, ensure that you have Anaconda Distribution installed on your Linux system. If you haven't installed it yet, please visit the [Anaconda website](https://www.anaconda.com/distribution/) and follow the instructions to download and install Anaconda.
 
 ### Installation Steps
 

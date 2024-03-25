@@ -26,12 +26,12 @@ def test(model_path, model_name, net, tst_loader, other_test_loader):
 
     RMSE_test, MAE_test, SD_test, R_test = evaluate(net, tst_loader, args)  # 在测试集上评估模型的rmse、mae、ad、r
     log = 'Test: RMSE: %.4f, MAE: %.4f, SD: %.4f, R: %.4f.\n' % (RMSE_test, MAE_test, SD_test, R_test)
-    print('测试集上模型的性能：')
+    print('The Performance on PDBbind:')
     print(log)
 
     RMSE_test, MAE_test, SD_test, R_test = evaluate(net, other_test_loader, args)  # 在测试集上评估模型的rmse、mae、ad、r
     log = 'Test: RMSE: %.4f, MAE: %.4f, SD: %.4f, R: %.4f.\n' % (RMSE_test, MAE_test, SD_test, R_test)
-    print('CSAR_NRC_HiQ测试集上模型的性能：')
+    print('The Performance on CSAR_NRC_HiQ:')
     print(log)
 
 def setup_seed(seed):
@@ -156,7 +156,7 @@ def train(args, model, train_loader, test_loader, valid_loader, another_test_loa
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mode', type=int, default=0)  # 训练模式为1, 测试模式为0
+    parser.add_argument('--mode', type=int, default=0)  
     parser.add_argument('--dataset', type=str, default='pdbbind2016_general')
     parser.add_argument('--another_test_dataset', type=str, default='csar_nrc_hiq_type_save')
     parser.add_argument('--train_model_name', type=str, default='EIGN')
@@ -170,7 +170,7 @@ if __name__ == "__main__":
     parser.add_argument('--model_saved_dir', type=str, default='./saved_model')
     parser.add_argument('--dataset_dir', type=str, default='./dataset/')
     parser.add_argument('--random_seed', type=int, default=123)
-    parser.add_argument("--lr", type=float, default=0.0005)
+    parser.add_argument("--lr", type=float, default=0.001)
     parser.add_argument("--hidden_dim", type=int, default=128)
     parser.add_argument("--lr_decay_rate", type=float, default=0.5)
     parser.add_argument("--num_layers", type=int, default=2)
@@ -212,8 +212,6 @@ if __name__ == "__main__":
 
     if args.mode == 1:  # 如果是训练模式的话
         # 训练模型
-        # a = paddle.load(os.path.join(args.model_saved_dir, args.test_model_name))
-        # model.set_state_dict(a['model'])
         test_complex = GraphDataset(args.dataset_dir, "%s_test" % args.dataset)
         test_loader = Dataloader(test_complex, args.batch_size, shuffle=False, collate_fn=collate_fn)
         valid_complex = GraphDataset(args.dataset_dir, "%s_val" % args.dataset)

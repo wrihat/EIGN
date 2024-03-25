@@ -2,13 +2,13 @@
 a method for predicting the binding affinity of protein-Ligand
 # Installing the eign Virtual Environment
 
-This document will guide you through the process of installing and configuring the `eign` Anaconda virtual environment on a Linux system. This environment contains various popular machine learning, scientific computing, and data processing libraries, such as TensorFlow, PyTorch, Scikit-learn, Pandas, and more.
+This repository is the implementation of EIGN. This document will describe the steps for setting up the environment, as well as the steps for testing our trained model.
 
-## Prerequisites
+## Installation
 
 Before you begin, ensure that you have Anaconda Distribution installed on your Linux system. If you haven't installed it yet, please visit the [Anaconda website](https://www.anaconda.com/distribution/) and follow the instructions to download and install Anaconda.
 
-## Steps
+### Installation Steps
 
 1. **Create the Virtual Environment**
 
@@ -50,8 +50,18 @@ Before you begin, ensure that you have Anaconda Distribution installed on your L
    import paddle
    import pgl
    ```
-
    If no errors occur, it means these libraries have been successfully installed.
+
+## Test Trained EIGN
+
+    The trained model is saved in ./trained directory, and the test dataset is placed under the ./dataset directory, please make sure the files in the response directory have been downloaded.Then  run the command at the command line:
+    ```shell
+     nohup python test.py --cuda 0 --batch_size 2 > ./running_logs/test_logs/pdbbind2016_EIGN.txt 2>&1 &
+     ```
+
+
+    
+
 
 
 
